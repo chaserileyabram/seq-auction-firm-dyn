@@ -24,27 +24,27 @@ import os
 #     'debug': True
 # })
 
-# sf.init({ # Runner for PBS
-#     "executors":{
-#         "hpc":{
-#             "account": "abram"
-#             "maxsize": 20,
-#             "modules": 'julia/1.8.3',
-#             "walltime": '00:01:00'
-#         } 
-#     },
-#     'debug': True
-# })
-
-sf.init({ # local runner
+sf.init({ # Runner for PBS
     "executors":{
-        "local": {
-            "account" : "abram",
-            "maxsize" : 5
+        "hpc":{
+            "account": "abram",
+            "maxsize": 20,
+            "modules": 'julia/1.8.3',
+            "walltime": '00:02:00'
         } 
     },
-    'debug':True
+    'debug': True
 })
+
+# sf.init({ # local runner
+#     "executors":{
+#         "local": {
+#             "account" : "abram",
+#             "maxsize" : 5
+#         } 
+#     },
+#     'debug':True
+# })
 
 # create temp-directory to store results in
 temp_dir = 'temp'
@@ -55,7 +55,7 @@ if not os.path.exists(temp_dir):
 async def flow_mysim():
 
     # Initialize output
-    tasks = [
+    task_init = [
         sf.Task(
         cmd = f"julia init_output.jl",
         # outputs = f"{temp_dir}/res_{i}.csv",
@@ -64,14 +64,14 @@ async def flow_mysim():
         # for i in [2,3,4,5]
     ]
 
-    await sf.bag(*tasks)
+    await sf.bag(*task_init)
 
     # Calibrate each version of model
     tasks = [
         sf.Task(
         cmd = f"julia calibrate_model.jl {i}",
         # outputs = f"{temp_dir}/res_{i}.csv",
-        name = f"sim-{i}")
+        name = f"sim-{i}").set_cpu(2).set_memory(4)
         # for i in range(5)
         for i in [2,4,5]
     ]
@@ -87,7 +87,7 @@ async def flow_mysim():
     # await t_agg
 
     # Combine output
-    tasks = [
+    task_combine = [
         sf.Task(
         cmd = f"julia combine_output.jl",
         # outputs = f"{temp_dir}/res_{i}.csv",
@@ -95,6 +95,8 @@ async def flow_mysim():
         # for i in range(5)
         # for i in [2,3,4,5]
     ]
+
+    await sf.bag(*task_combine)
 
 
     # Can add cleanup-tasks here (e.g., to remove temp_dir)
