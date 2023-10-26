@@ -39,7 +39,8 @@ import os
 sf.init({ # local runner
     "executors":{
         "local": {
-            "maxsize" : 50
+            "account" : "abram"
+            "maxsize" : 5
         } 
     },
     'debug':True

@@ -1,10 +1,11 @@
 # Chase Abram
 
 # Start log
-row = 6
+row = ARGS[1]
 row_str = string(row)
 
 using XLSX
+include("seq_auction_firm_dyn.jl")
 # using Logging
 
 # io = open("log_"*row_str*".txt", "w+")
@@ -19,7 +20,7 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
     # Load packages needed, as well as model setup code
     
     ##
-    include("seq_auction_firm_dyn.jl")
+    
     ##
 
     # Use row number of iteration to grab moments
