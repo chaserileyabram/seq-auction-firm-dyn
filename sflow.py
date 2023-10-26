@@ -64,6 +64,8 @@ async def flow_mysim():
         # for i in [2,3,4,5]
     ]
 
+    await sf.bag(*tasks)
+
     # Calibrate each version of model
     tasks = [
         sf.Task(
