@@ -42,8 +42,8 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
     # Time for stuff to compile (not sure if needed)
     sleep(1.0)
 
-    mcal = seq_auction_firm_dyn()
-    # mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dwq])
+    # mcal = seq_auction_firm_dyn()
+    mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dwq])
 
     ##
     # Write parameters to spreadsheet
