@@ -39,7 +39,7 @@ import os
 sf.init({ # local runner
     "executors":{
         "local": {
-            "account" : "abram"
+            "account" : "abram",
             "maxsize" : 5
         } 
     },
@@ -71,7 +71,7 @@ async def flow_mysim():
         # outputs = f"{temp_dir}/res_{i}.csv",
         name = f"sim-{i}")
         # for i in range(5)
-        for i in [2,3,4,5]
+        for i in [2,4,5]
     ]
 
     await sf.bag(*tasks)
