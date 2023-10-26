@@ -1,7 +1,7 @@
 # Chase Abram
 
 # Sequential auction labor search with firm producutivity dynamics
-cd("/Users/chaseabram/Library/CloudStorage/Dropbox/Income Inequality Origins")
+# cd("/Users/chaseabram/Library/CloudStorage/Dropbox/Income Inequality Origins")
 ##
 # Packages 
 using LinearAlgebra
@@ -693,9 +693,9 @@ function switch_mean_wage_change(m; add_to_plot=false)
     return mean(dws)
 end
 
-switch_mean_wage_change(m0)
-switch_mean_wage_change(mlambda; add_to_plot=true)
-switch_mean_wage_change(mchi; add_to_plot=true)
+# switch_mean_wage_change(m0)
+# switch_mean_wage_change(mlambda; add_to_plot=true)
+# switch_mean_wage_change(mchi; add_to_plot=true)
 
 ##
 
@@ -814,7 +814,7 @@ end
 # stay_share(mchi)
 # ue_share(m0)
 # switch_share(m0)
-unemp(m0)
+# unemp(m0)
 ##
 # Crank out a MCMC, first just to see distribution of firm size, J2J, etc.
 # m0 = seq_auction_firm_dyn(nJ=1000, nI=1000, nT = 1000,
@@ -823,465 +823,465 @@ unemp(m0)
 # rho_z = 0.0,
 # )
 
-m0 = seq_auction_firm_dyn(nJ=10, nI=1000, nT = 1000,
-chi = 0.05, lambda = 0.1, delta = 0.05, 
-n_z = 11, mu_z = -0.01, sigma_z = 0.1, 
-b = 0.9)
+# m0 = seq_auction_firm_dyn(nJ=10, nI=1000, nT = 1000,
+# chi = 0.05, lambda = 0.1, delta = 0.05, 
+# n_z = 11, mu_z = -0.01, sigma_z = 0.1, 
+# b = 0.9)
 
-##
-mcmc(m0)
+# ##
+# mcmc(m0)
 
-##
-# Check density of firms
-burn_t = round(Int64, m0.nT * 2/3)
-kde_f = kde(vec(m0.zjt_ind[:, burn_t:end]), bandwidth = 0.6)
-plt = plot(kde_f.x, kde_f.density)
-histogram!(vec(m0.zjt_ind[:,burn_t:end]), normalize=:pdf)
-plot!(m0.f)
-display(plt)
-##
+# ##
+# # Check density of firms
+# burn_t = round(Int64, m0.nT * 2/3)
+# kde_f = kde(vec(m0.zjt_ind[:, burn_t:end]), bandwidth = 0.6)
+# plt = plot(kde_f.x, kde_f.density)
+# histogram!(vec(m0.zjt_ind[:,burn_t:end]), normalize=:pdf)
+# plot!(m0.f)
+# display(plt)
+# ##
 
-# Plot size path of each firm
-j_size= zeros(m0.nJ, m0.nT)
-for j in 1:m0.nJ
-    println("size j = ", j)
-    j_size[j,:] = sum(m0.jit .== j, dims=1) ./ m0.nI
-end
-unemp_size = (1 .- sum(j_size, dims=1))'
+# # Plot size path of each firm
+# j_size= zeros(m0.nJ, m0.nT)
+# for j in 1:m0.nJ
+#     println("size j = ", j)
+#     j_size[j,:] = sum(m0.jit .== j, dims=1) ./ m0.nI
+# end
+# unemp_size = (1 .- sum(j_size, dims=1))'
 
-# smooth out the paths
-window = 100
-unemp_smooth = unemp_size[1:end-window+1]
-j_smooth = j_size[:, 1:end-window+1]
-for t in 2:window
-    j_smooth .+= j_size[:, t:end-window+t]
-    unemp_smooth .+= unemp_size[t:end-window+t]
-end
-unemp_smooth ./= window
-j_smooth ./= window
+# # smooth out the paths
+# window = 100
+# unemp_smooth = unemp_size[1:end-window+1]
+# j_smooth = j_size[:, 1:end-window+1]
+# for t in 2:window
+#     j_smooth .+= j_size[:, t:end-window+t]
+#     unemp_smooth .+= unemp_size[t:end-window+t]
+# end
+# unemp_smooth ./= window
+# j_smooth ./= window
 
-plt = plot(unemp_size, label = "unemp")
-for j in 1:m0.nJ
-    println("plot size j: ", j)
-    plot!(j_size[j,:], label = j)
-end
-
-display(plt)
-
-# plt = plot(unemp_smooth, label = "unemp")
-plt = plot()
-for j in 1:m0.nJ
-    println("plot size j: ", j)
-    plot!(j_smooth[j,:], label = j)
-end
-
-display(plt)
-
-##
-# J2J flows
-j2j = zeros(m0.nJ+1, m0.nJ+1)
-for i in 1:m0.nI
-    for t in 2:m0.nT
-        j2j[m0.jit[i,t-1] + 1, m0.jit[i,t] + 1] += 1
-    end
-end
-j2j ./= sum(j2j, dims=2)
-
-##
-# Now want to see transitions between z levels
-jit_zind = zeros(m0.n_z + 1, m0.n_z + 1)
-for i in 1:m0.nI
-    for t in 2:m0.nT
-        if m0.jit[i,t-1] == 0 && m0.jit[i,t] == 0
-            jit_zind[1,1] += 1
-        elseif m0.jit[i,t-1] == 0
-            jit_zind[1, m0.zjt_ind[m0.jit[i,t],t] + 1] += 1
-        elseif m0.jit[i,t] == 0
-            jit_zind[m0.zjt_ind[m0.jit[i,t-1],t] + 1, 1] += 1
-        else
-            jit_zind[m0.zjt_ind[m0.jit[i,t-1],t-1] + 1, m0.zjt_ind[m0.jit[i,t],t] + 1] += 1
-        end
-    end
-end
-
-emp_trans = jit_zind[2:end, 2:end]
-emp_trans ./= sum(emp_trans, dims=2)
-
-unemp_out = jit_zind[1,2:end]
-unemp_out ./= sum(unemp_out)
-
-unemp_in = jit_zind[2:end,1]
-unemp_in ./= sum(unemp_in)
-
-plot(m0.f, label = "f")
-plot!(unemp_out, label = "out")
-plot!(unemp_in, label = "in")
-
-##
-# Want to see dist of z across workers
-j_inds = m0.jit .!= 0
-zs = zeros(size(m0.jit))
-for i in 1:m0.nI
-    for t in 1:m0.nT
-        if m0.jit[i,t] == 0
-            zs[i,t] = 0
-        else
-            zs[i,t] = m0.zjt_ind[m0.jit[i,t],t]
-        end
-    end
-end
-histogram(vec(zs), normalize=:pdf)
-
-##
-# Checking basic wage patterns
-nb = 1000
-bets = LinRange(0,1,nb)
-ws =[wage(m0, bets[bi], zi) for zi in 1:m0.n_z, bi in 1:nb]
-plt = plot(legend=false)
-for zi in 1:m0.n_z
-    plot!(bets, ws[zi,:], label = "zi = "*string(zi))
-end
-display(plt)
-
-##
-# wage Distributions (account for burn-in!)
-burn_t = 700
-kde_w = kde(vec(m0.wit[:,burn_t:1000]))
-# kde_w = kde(log.(vec(m0.wit[:,burn_t:1000])))
-# kde_w = kde(vec(m0.wit[:,burn_t:1000]), bandwidth = 0.1)
-# kde_w = kde(vec(m0.wit[500,burn_t:end]))
-plot(kde_w.x, kde_w.density)
-
-##
-# Now want to think about wage distributions within firms
-j = 50
-for t in 1:10:m0.nT
-    jinds = m0.jit[:,t] .== j
-    ws = m0.wit[jinds,t]
-    println("t: ", t, ", length(ws): ", length(ws))
-    if length(ws) > 0
-        kde_w = kde(ws)
-        plt = plot(kde_w.x, kde_w.density)
-        display(plt)
-    end
-end
-
-
-##
-m0 = seq_auction_firm_dyn(nJ=100, nI=1000, nT = 10000,
-chi = 0.3, lambda = 0.1, delta = 0.02, 
-n_z = 11, mu_z = -0.05, sigma_z = sqrt(0.05), 
-b = 0.95,
-dt = 1.0)
-
-##
-mcmc(m0)
-
-
-##
-# Get earnings quartile and LP quartile transition matrices
-# How do they both change when messing with frictions or LP process?
-burn_t = 0
-zqt = zeros(m0.nJ, m0.nT - burn_t)
-for t in 1:(m0.nT - burn_t)
-    zqt[:,t] = denserank(m0.zjt_ind[:,t])
-    zqt[:,t] ./= maximum(zqt[:,t])
-    zqt[:,t] .= ceil.(zqt[:,t] .* 4)
-    # zqt[:,t] = ceil.((denserank(m0.zjt_ind[:,t]) ./ m0.nJ) .* 4)
-end
-zqt = Int.(zqt)
-
-trans_zq = zeros(4,4)
-for j in 1:m0.nJ
-    for t in 2:(m0.nT - burn_t)
-        trans_zq[zqt[j,t-1], zqt[j,t]] += 1
-        # trans_zq[m0.zjt_ind[j,t-1], m0.zjt_ind[j,t]] += 1
-    end
-end
-
-trans_zq ./= sum(trans_zq, dims=2)
-println("trans_zq:")
-display(trans_zq)
-
-# Want to exclude unemp from calc
-wqt = zeros(m0.nI, m0.nT - burn_t)
-for t in 1:(m0.nT - burn_t)
-    # nob_inds = m0.wit[:,t] .!= m0.b
-    nob_inds = 1:m0.nI
-    if sum(nob_inds) > 0
-        wqt[nob_inds,t] = denserank(m0.wit[nob_inds,t])
-        wqt[nob_inds,t] ./= maximum(wqt[nob_inds,t])
-        wqt[nob_inds,t] .= ceil.(wqt[nob_inds,t] .* 4)
-    end
-end
-wqt = Int.(wqt)
-
-trans_wq = zeros(4,4)
-for i in 1:m0.nI
-    for t in 2:(m0.nT - burn_t)
-        trans_wq[wqt[i,t-1], wqt[i,t]] += 1
-    end
-end
-
-trans_wq ./= sum(trans_wq, dims=2)
-println("trans_wq:")
-display(trans_wq)
-
-##
-# Baseline
-# m0 = seq_auction_firm_dyn(nJ=100, nI=100000, nT = 100,
-# chi = 0.1, lambda = 0.5, delta = 0.02, 
-# n_z = 11, mu_z = -0.05, sigma_z = 0.05, 
-# b = 0.95,
-# dt = 0.1)
-m0 = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-chi = 0.5, lambda = 0.2, delta = 0.05, 
-n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
-b = 0.95,
-dt = 1.0)
-mcmc(m0)
-
-# Decrease lambda
-mlambda = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-chi = 0.5, lambda = 0.1, delta = 0.05, 
-n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
-b = 0.95,
-dt = 1.0)
-mcmc(mlambda)
-
-
-# # Decrease chi
-mchi = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-chi = 0.25, lambda = 0.2, delta = 0.05, 
-n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
-b = 0.95,
-dt = 1.0)
-mcmc(mchi)
-
-
-##
-# See quartile transition
-z0_trans, w0_trans = quartile_trans(m0)
-println("baseline z_trans: ")
-display(z0_trans)
-println()
-println("baseline w_trans: ")
-display(w0_trans)
-
-zlambda_trans, wlambda_trans = quartile_trans(mlambda)
-println("lambda z_trans: ")
-display(zlambda_trans)
-println()
-println("lambda w_trans: ")
-display(wlambda_trans)
-
-zchi_trans, wchi_trans = quartile_trans(mchi)
-println("chi z_trans: ")
-display(zchi_trans)
-println()
-println("chi w_trans: ")
-display(wchi_trans)
-
-
-# quartile_tran(mlambda)
-# quartile_trans(mchi)
-
-##
-# Firm size distribution
-plot_firm_size(m0)
-plot_firm_size(mlambda; add_to_plot=true)
-plt = plot_firm_size(mchi; add_to_plot=true)
-# savefig(plt, "firm_size.svg")
-##
-# J2J stayer vs. mover
-uu, ue, eu, ee_stay, ee_move = job_trans(m0)
-println("baseline J2J: ", ee_move / m0.dt)
-println("baseline J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
-uu, ue, eu, ee_stay, ee_move = job_trans(mlambda)
-println("lambda J2J: ", ee_move / m0.dt)
-println("lambda J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
-uu, ue, eu, ee_stay, ee_move = job_trans(mchi)
-println("chi J2J: ", ee_move / m0.dt)
-println("chi J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
-
-##
-# cross-section vs 5-year std earn
-std_1, std_5 = earn_ineq(m0)
-println("baseline: std = ", std_1, ", std_5 = ", std_5)
-std_1, std_5 = earn_ineq(mlambda)
-println("lambda: std = ", std_1, ", std_5 = ", std_5)
-std_1, std_5 = earn_ineq(mchi)
-println("chi: std = ", std_1, ", std_5 = ", std_5)
-
-##
-# rank ar(1)
-r_lp, r_earn = rank_ar1(m0)
-println("baseline AR(1)s: ")
-println(r_lp)
-println()
-println(r_earn)
-
-r_lp, r_earn = rank_ar1(mlambda)
-println("lambda AR(1)s: ")
-println(r_lp)
-println()
-println(r_earn)
-
-r_lp, r_earn = rank_ar1(mchi)
-println("chi AR(1)s: ")
-println(r_lp)
-println()
-println(r_earn)
-##
-# Mean wage change J2J
-dw = j2j_mean_wage_change(m0)
-println("baseline dw (J2J): ", dw)
-dw = j2j_mean_wage_change(mlambda; add_to_plot=true)
-println("lambda dw (J2J): ", dw)
-dw = j2j_mean_wage_change(mchi; add_to_plot=true)
-println("chi dw (J2J): ", dw)
-println()
-# stayer change
-dw = stay_mean_wage_change(m0)
-println("baseline dw (stayer): ", dw)
-dw = stay_mean_wage_change(mlambda; add_to_plot=true)
-println("lambda dw (stayer): ", dw)
-dw = stay_mean_wage_change(mchi; add_to_plot=true)
-println("chi dw (stayer): ", dw)
-
-##
-println("baseline stay share: ", stay_share(m0))
-println("lambda stay share: ", stay_share(mlambda))
-println("chi stay share: ", stay_share(mchi))
-
-
-##
-# Wage distribution
-# density(vec(log.(m0.wit[m0.wit .!= m0.b])))
-burn_t = 900
-w_burn = m0.wit[:, burn_t:end]
-w_burn = w_burn[w_burn .!= m0.b]
-kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
-plot(kde_w.x, kde_w.density, label = "baseline")
-
-w_burn = mlambda.wit[:, burn_t:end]
-w_burn = w_burn[w_burn .!= mlambda.b]
-kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
-plot!(kde_w.x, kde_w.density, label = "lambda")
-
-w_burn = mchi.wit[:, burn_t:end]
-w_burn = w_burn[w_burn .!= mchi.b]
-kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
-plot!(kde_w.x, kde_w.density, label = "chi")
-
-##
-function plot_wage_dist(m; name="unlabelled")
-    burn_t = Int(floor(m.nT * 2/3))
-    w_burn = m.wit[:, burn_t:end]
-    w_burn = w_burn[w_burn .!= m.b]
-    kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
-    return plot(kde_w.x, kde_w.density, label = name)
-end
-
-plt = plot_wage_dist(mcal)
-display(plt)
-##
-# Joint distribution over wages and LP
-burn_t = 900
-w_burn = m0.wit[:, burn_t:end]
-w_burn = w_burn[w_burn .!= m0.b]
-ws = vec(log.(w_burn))
-z_burn = m0.zit_val[:, burn_t:end]
-z_burn = z_burn[z_burn .!= m0.b]
-zs = vec(z_burn)
-
-kzw = kde((zs, ws), bandwidth = (0.01, 0.005))
-plt = surface(kzw.y, kzw.x, kzw.density, camera = (20,40), 
-color=reverse(cgrad(:RdYlBu_11)), colorbar= :false)
-display(plt)
-plt = heatmap(kzw.x, kzw.y, kzw.density', color=reverse(cgrad(:RdYlBu_11)))
-display(plt)
-
-# distribution over z (firm-level)
-# kz = kde(log.(vec(m0.zjt_val)), bandwidth = 0.01)
-# plt = plot(kz.x, kz.density, label = "firms")
-
-# # distribution over z (worker-level)
-# kz = kde(log.(zs), bandwidth = 0.01)
-# plot!(kz.x, kz.density, label = "workers")
+# plt = plot(unemp_size, label = "unemp")
+# for j in 1:m0.nJ
+#     println("plot size j: ", j)
+#     plot!(j_size[j,:], label = j)
+# end
 
 # display(plt)
 
+# # plt = plot(unemp_smooth, label = "unemp")
+# plt = plot()
+# for j in 1:m0.nJ
+#     println("plot size j: ", j)
+#     plot!(j_smooth[j,:], label = j)
+# end
 
-##
-# Binscatter wage transitions
-wt_1 = vec(m0.wit[:,1:(end-1)])
-wt = vec(m0.wit[:,2:end])
-n = 10000
-inds = rand(1:length(wt),n)
+# display(plt)
 
-nq = 10
-q_cuts = zeros(nq)
-for iq in 1:nq
-    q_cuts[iq] = quantile(wt_1, iq/nq)
-end
-wqt_1 = zeros(nq)
-wqt = zeros(nq)
-for iq in 1:nq
-    if iq == 1
-        wqt_1[iq] = mean(wt_1[wt_1 .<= q_cuts[iq]])
-        wqt[iq] = mean(wt[wt_1 .<= q_cuts[iq]])
-    else
-        wqt_1[iq] = mean(wt_1[wt_1 .> q_cuts[iq-1] .&& wt_1 .<= q_cuts[iq]])
-        wqt[iq] = mean(wt[wt_1 .> q_cuts[iq-1] .&& wt_1 .<= q_cuts[iq]])
-    end
-end
+# ##
+# # J2J flows
+# j2j = zeros(m0.nJ+1, m0.nJ+1)
+# for i in 1:m0.nI
+#     for t in 2:m0.nT
+#         j2j[m0.jit[i,t-1] + 1, m0.jit[i,t] + 1] += 1
+#     end
+# end
+# j2j ./= sum(j2j, dims=2)
+
+# ##
+# # Now want to see transitions between z levels
+# jit_zind = zeros(m0.n_z + 1, m0.n_z + 1)
+# for i in 1:m0.nI
+#     for t in 2:m0.nT
+#         if m0.jit[i,t-1] == 0 && m0.jit[i,t] == 0
+#             jit_zind[1,1] += 1
+#         elseif m0.jit[i,t-1] == 0
+#             jit_zind[1, m0.zjt_ind[m0.jit[i,t],t] + 1] += 1
+#         elseif m0.jit[i,t] == 0
+#             jit_zind[m0.zjt_ind[m0.jit[i,t-1],t] + 1, 1] += 1
+#         else
+#             jit_zind[m0.zjt_ind[m0.jit[i,t-1],t-1] + 1, m0.zjt_ind[m0.jit[i,t],t] + 1] += 1
+#         end
+#     end
+# end
+
+# emp_trans = jit_zind[2:end, 2:end]
+# emp_trans ./= sum(emp_trans, dims=2)
+
+# unemp_out = jit_zind[1,2:end]
+# unemp_out ./= sum(unemp_out)
+
+# unemp_in = jit_zind[2:end,1]
+# unemp_in ./= sum(unemp_in)
+
+# plot(m0.f, label = "f")
+# plot!(unemp_out, label = "out")
+# plot!(unemp_in, label = "in")
+
+# ##
+# # Want to see dist of z across workers
+# j_inds = m0.jit .!= 0
+# zs = zeros(size(m0.jit))
+# for i in 1:m0.nI
+#     for t in 1:m0.nT
+#         if m0.jit[i,t] == 0
+#             zs[i,t] = 0
+#         else
+#             zs[i,t] = m0.zjt_ind[m0.jit[i,t],t]
+#         end
+#     end
+# end
+# histogram(vec(zs), normalize=:pdf)
+
+# ##
+# # Checking basic wage patterns
+# nb = 1000
+# bets = LinRange(0,1,nb)
+# ws =[wage(m0, bets[bi], zi) for zi in 1:m0.n_z, bi in 1:nb]
+# plt = plot(legend=false)
+# for zi in 1:m0.n_z
+#     plot!(bets, ws[zi,:], label = "zi = "*string(zi))
+# end
+# display(plt)
+
+# ##
+# # wage Distributions (account for burn-in!)
+# burn_t = 700
+# kde_w = kde(vec(m0.wit[:,burn_t:1000]))
+# # kde_w = kde(log.(vec(m0.wit[:,burn_t:1000])))
+# # kde_w = kde(vec(m0.wit[:,burn_t:1000]), bandwidth = 0.1)
+# # kde_w = kde(vec(m0.wit[500,burn_t:end]))
+# plot(kde_w.x, kde_w.density)
+
+# ##
+# # Now want to think about wage distributions within firms
+# j = 50
+# for t in 1:10:m0.nT
+#     jinds = m0.jit[:,t] .== j
+#     ws = m0.wit[jinds,t]
+#     println("t: ", t, ", length(ws): ", length(ws))
+#     if length(ws) > 0
+#         kde_w = kde(ws)
+#         plt = plot(kde_w.x, kde_w.density)
+#         display(plt)
+#     end
+# end
+
+
+# ##
+# m0 = seq_auction_firm_dyn(nJ=100, nI=1000, nT = 10000,
+# chi = 0.3, lambda = 0.1, delta = 0.02, 
+# n_z = 11, mu_z = -0.05, sigma_z = sqrt(0.05), 
+# b = 0.95,
+# dt = 1.0)
+
+# ##
+# mcmc(m0)
+
+
+# ##
+# # Get earnings quartile and LP quartile transition matrices
+# # How do they both change when messing with frictions or LP process?
+# burn_t = 0
+# zqt = zeros(m0.nJ, m0.nT - burn_t)
+# for t in 1:(m0.nT - burn_t)
+#     zqt[:,t] = denserank(m0.zjt_ind[:,t])
+#     zqt[:,t] ./= maximum(zqt[:,t])
+#     zqt[:,t] .= ceil.(zqt[:,t] .* 4)
+#     # zqt[:,t] = ceil.((denserank(m0.zjt_ind[:,t]) ./ m0.nJ) .* 4)
+# end
+# zqt = Int.(zqt)
+
+# trans_zq = zeros(4,4)
+# for j in 1:m0.nJ
+#     for t in 2:(m0.nT - burn_t)
+#         trans_zq[zqt[j,t-1], zqt[j,t]] += 1
+#         # trans_zq[m0.zjt_ind[j,t-1], m0.zjt_ind[j,t]] += 1
+#     end
+# end
+
+# trans_zq ./= sum(trans_zq, dims=2)
+# println("trans_zq:")
+# display(trans_zq)
+
+# # Want to exclude unemp from calc
+# wqt = zeros(m0.nI, m0.nT - burn_t)
+# for t in 1:(m0.nT - burn_t)
+#     # nob_inds = m0.wit[:,t] .!= m0.b
+#     nob_inds = 1:m0.nI
+#     if sum(nob_inds) > 0
+#         wqt[nob_inds,t] = denserank(m0.wit[nob_inds,t])
+#         wqt[nob_inds,t] ./= maximum(wqt[nob_inds,t])
+#         wqt[nob_inds,t] .= ceil.(wqt[nob_inds,t] .* 4)
+#     end
+# end
+# wqt = Int.(wqt)
+
+# trans_wq = zeros(4,4)
+# for i in 1:m0.nI
+#     for t in 2:(m0.nT - burn_t)
+#         trans_wq[wqt[i,t-1], wqt[i,t]] += 1
+#     end
+# end
+
+# trans_wq ./= sum(trans_wq, dims=2)
+# println("trans_wq:")
+# display(trans_wq)
+
+# ##
+# # Baseline
+# # m0 = seq_auction_firm_dyn(nJ=100, nI=100000, nT = 100,
+# # chi = 0.1, lambda = 0.5, delta = 0.02, 
+# # n_z = 11, mu_z = -0.05, sigma_z = 0.05, 
+# # b = 0.95,
+# # dt = 0.1)
+# m0 = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+# chi = 0.5, lambda = 0.2, delta = 0.05, 
+# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+# b = 0.95,
+# dt = 1.0)
+# mcmc(m0)
+
+# # Decrease lambda
+# mlambda = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+# chi = 0.5, lambda = 0.1, delta = 0.05, 
+# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+# b = 0.95,
+# dt = 1.0)
+# mcmc(mlambda)
+
+
+# # # Decrease chi
+# mchi = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+# chi = 0.25, lambda = 0.2, delta = 0.05, 
+# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+# b = 0.95,
+# dt = 1.0)
+# mcmc(mchi)
+
+
+# ##
+# # See quartile transition
+# z0_trans, w0_trans = quartile_trans(m0)
+# println("baseline z_trans: ")
+# display(z0_trans)
+# println()
+# println("baseline w_trans: ")
+# display(w0_trans)
+
+# zlambda_trans, wlambda_trans = quartile_trans(mlambda)
+# println("lambda z_trans: ")
+# display(zlambda_trans)
+# println()
+# println("lambda w_trans: ")
+# display(wlambda_trans)
+
+# zchi_trans, wchi_trans = quartile_trans(mchi)
+# println("chi z_trans: ")
+# display(zchi_trans)
+# println()
+# println("chi w_trans: ")
+# display(wchi_trans)
+
+
+# # quartile_tran(mlambda)
+# # quartile_trans(mchi)
+
+# ##
+# # Firm size distribution
+# plot_firm_size(m0)
+# plot_firm_size(mlambda; add_to_plot=true)
+# plt = plot_firm_size(mchi; add_to_plot=true)
+# # savefig(plt, "firm_size.svg")
+# ##
+# # J2J stayer vs. mover
+# uu, ue, eu, ee_stay, ee_move = job_trans(m0)
+# println("baseline J2J: ", ee_move / m0.dt)
+# println("baseline J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
+# uu, ue, eu, ee_stay, ee_move = job_trans(mlambda)
+# println("lambda J2J: ", ee_move / m0.dt)
+# println("lambda J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
+# uu, ue, eu, ee_stay, ee_move = job_trans(mchi)
+# println("chi J2J: ", ee_move / m0.dt)
+# println("chi J2J (normalized): ", ee_move/(eu + ee_stay + ee_move) / m0.dt)
+
+# ##
+# # cross-section vs 5-year std earn
+# std_1, std_5 = earn_ineq(m0)
+# println("baseline: std = ", std_1, ", std_5 = ", std_5)
+# std_1, std_5 = earn_ineq(mlambda)
+# println("lambda: std = ", std_1, ", std_5 = ", std_5)
+# std_1, std_5 = earn_ineq(mchi)
+# println("chi: std = ", std_1, ", std_5 = ", std_5)
+
+# ##
+# # rank ar(1)
+# r_lp, r_earn = rank_ar1(m0)
+# println("baseline AR(1)s: ")
+# println(r_lp)
+# println()
+# println(r_earn)
+
+# r_lp, r_earn = rank_ar1(mlambda)
+# println("lambda AR(1)s: ")
+# println(r_lp)
+# println()
+# println(r_earn)
+
+# r_lp, r_earn = rank_ar1(mchi)
+# println("chi AR(1)s: ")
+# println(r_lp)
+# println()
+# println(r_earn)
+# ##
+# # Mean wage change J2J
+# dw = j2j_mean_wage_change(m0)
+# println("baseline dw (J2J): ", dw)
+# dw = j2j_mean_wage_change(mlambda; add_to_plot=true)
+# println("lambda dw (J2J): ", dw)
+# dw = j2j_mean_wage_change(mchi; add_to_plot=true)
+# println("chi dw (J2J): ", dw)
+# println()
+# # stayer change
+# dw = stay_mean_wage_change(m0)
+# println("baseline dw (stayer): ", dw)
+# dw = stay_mean_wage_change(mlambda; add_to_plot=true)
+# println("lambda dw (stayer): ", dw)
+# dw = stay_mean_wage_change(mchi; add_to_plot=true)
+# println("chi dw (stayer): ", dw)
+
+# ##
+# println("baseline stay share: ", stay_share(m0))
+# println("lambda stay share: ", stay_share(mlambda))
+# println("chi stay share: ", stay_share(mchi))
+
+
+# ##
+# # Wage distribution
+# # density(vec(log.(m0.wit[m0.wit .!= m0.b])))
+# burn_t = 900
+# w_burn = m0.wit[:, burn_t:end]
+# w_burn = w_burn[w_burn .!= m0.b]
+# kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
+# plot(kde_w.x, kde_w.density, label = "baseline")
+
+# w_burn = mlambda.wit[:, burn_t:end]
+# w_burn = w_burn[w_burn .!= mlambda.b]
+# kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
+# plot!(kde_w.x, kde_w.density, label = "lambda")
+
+# w_burn = mchi.wit[:, burn_t:end]
+# w_burn = w_burn[w_burn .!= mchi.b]
+# kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
+# plot!(kde_w.x, kde_w.density, label = "chi")
+
+# ##
+# function plot_wage_dist(m; name="unlabelled")
+#     burn_t = Int(floor(m.nT * 2/3))
+#     w_burn = m.wit[:, burn_t:end]
+#     w_burn = w_burn[w_burn .!= m.b]
+#     kde_w = kde(vec(log.(w_burn)), bandwidth = 0.05)
+#     return plot(kde_w.x, kde_w.density, label = name)
+# end
+
+# plt = plot_wage_dist(mcal)
+# display(plt)
+# ##
+# # Joint distribution over wages and LP
+# burn_t = 900
+# w_burn = m0.wit[:, burn_t:end]
+# w_burn = w_burn[w_burn .!= m0.b]
+# ws = vec(log.(w_burn))
+# z_burn = m0.zit_val[:, burn_t:end]
+# z_burn = z_burn[z_burn .!= m0.b]
+# zs = vec(z_burn)
+
+# kzw = kde((zs, ws), bandwidth = (0.01, 0.005))
+# plt = surface(kzw.y, kzw.x, kzw.density, camera = (20,40), 
+# color=reverse(cgrad(:RdYlBu_11)), colorbar= :false)
+# display(plt)
+# plt = heatmap(kzw.x, kzw.y, kzw.density', color=reverse(cgrad(:RdYlBu_11)))
+# display(plt)
+
+# # distribution over z (firm-level)
+# # kz = kde(log.(vec(m0.zjt_val)), bandwidth = 0.01)
+# # plt = plot(kz.x, kz.density, label = "firms")
+
+# # # distribution over z (worker-level)
+# # kz = kde(log.(zs), bandwidth = 0.01)
+# # plot!(kz.x, kz.density, label = "workers")
+
+# # display(plt)
+
+
+# ##
+# # Binscatter wage transitions
+# wt_1 = vec(m0.wit[:,1:(end-1)])
+# wt = vec(m0.wit[:,2:end])
+# n = 10000
+# inds = rand(1:length(wt),n)
+
+# nq = 10
+# q_cuts = zeros(nq)
+# for iq in 1:nq
+#     q_cuts[iq] = quantile(wt_1, iq/nq)
+# end
+# wqt_1 = zeros(nq)
+# wqt = zeros(nq)
+# for iq in 1:nq
+#     if iq == 1
+#         wqt_1[iq] = mean(wt_1[wt_1 .<= q_cuts[iq]])
+#         wqt[iq] = mean(wt[wt_1 .<= q_cuts[iq]])
+#     else
+#         wqt_1[iq] = mean(wt_1[wt_1 .> q_cuts[iq-1] .&& wt_1 .<= q_cuts[iq]])
+#         wqt[iq] = mean(wt[wt_1 .> q_cuts[iq-1] .&& wt_1 .<= q_cuts[iq]])
+#     end
+# end
 
 
 
 
-# zqt[:,t] = denserank(zjt_ind[:,t])
-#         zqt[:,t] ./= maximum(zqt[:,t])
-#         zqt[:,t] .= ceil.(zqt[:,t] .* 4)
-# scatter(wt_1[inds], wt[inds])
+# # zqt[:,t] = denserank(zjt_ind[:,t])
+# #         zqt[:,t] ./= maximum(zqt[:,t])
+# #         zqt[:,t] .= ceil.(zqt[:,t] .* 4)
+# # scatter(wt_1[inds], wt[inds])
 
-# plot!(wt_1[inds], wt_1[inds])
-scatter(wqt_1, wqt)
-line45 = LinRange(minimum(wt), maximum(wt), 100)
-plot!(line45, line45)
+# # plot!(wt_1[inds], wt_1[inds])
+# scatter(wqt_1, wqt)
+# line45 = LinRange(minimum(wt), maximum(wt), 100)
+# plot!(line45, line45)
 
-##
-# Alternatively, just do equal-sized binning?
-nq = 10
-line45 = LinRange(minimum(wt), maximum(wt), nq)
-wqt_1 = zeros(nq)
-wqt = zeros(nq)
-for iq in 1:nq
-    if iq == 1
-        wqt_1[iq] = mean(wt_1[wt_1 .<= line45[iq]])
-        wqt[iq] = mean(wt[wt_1 .<= line45[iq]])
-    else
-        wqt_1[iq] = mean(wt_1[wt_1 .> line45[iq-1] .&& wt_1 .<= line45[iq]])
-        wqt[iq] = mean(wt[wt_1 .> line45[iq-1] .&& wt_1 .<= line45[iq]])
-    end
-end
+# ##
+# # Alternatively, just do equal-sized binning?
+# nq = 10
+# line45 = LinRange(minimum(wt), maximum(wt), nq)
+# wqt_1 = zeros(nq)
+# wqt = zeros(nq)
+# for iq in 1:nq
+#     if iq == 1
+#         wqt_1[iq] = mean(wt_1[wt_1 .<= line45[iq]])
+#         wqt[iq] = mean(wt[wt_1 .<= line45[iq]])
+#     else
+#         wqt_1[iq] = mean(wt_1[wt_1 .> line45[iq-1] .&& wt_1 .<= line45[iq]])
+#         wqt[iq] = mean(wt[wt_1 .> line45[iq-1] .&& wt_1 .<= line45[iq]])
+#     end
+# end
 
-scatter(wqt_1, wqt)
-plot!(line45, line45)
+# scatter(wqt_1, wqt)
+# plot!(line45, line45)
 
-##
-# Checking my understanding on quantile rank regression
-n = 10000
-x = LinRange(0,1,n)
-y = circshift(x,500)
-# y = shuffle(x)
+# ##
+# # Checking my understanding on quantile rank regression
+# n = 10000
+# x = LinRange(0,1,n)
+# y = circshift(x,500)
+# # y = shuffle(x)
 
-df = DataFrame((x = x, y = y))
+# df = DataFrame((x = x, y = y))
 
-r = reg(df, @formula(y ~ x))
-display(r)
+# r = reg(df, @formula(y ~ x))
+# display(r)
 
-mean(x - y)
+# mean(x - y)
 
 ##
 # Start of calibration approach (will want to do full in separate file)
@@ -1356,18 +1356,18 @@ end
 # display(plt)
 
 ##
-lls = LinRange(-20, 10, 20)
-errs = zeros(length(lls))
-for i in 1:length(lls)
-    errs[i] = mom_err([-3.0, lls[i]], [0.1, 0.7, 1.1])[2]
-end
+# lls = LinRange(-20, 10, 20)
+# errs = zeros(length(lls))
+# for i in 1:length(lls)
+#     errs[i] = mom_err([-3.0, lls[i]], [0.1, 0.7, 1.1])[2]
+# end
 
-plt = plot(lls, errs)
-display(plt)
+# plt = plot(lls, errs)
+# display(plt)
 
-##
-m0 = seq_auction_firm_dyn(delta = 0.05, lambda = 0.2, xi = 1.1, n_z = 15)
-mcmc(m0)
+# ##
+# m0 = seq_auction_firm_dyn(delta = 0.05, lambda = 0.2, xi = 1.1, n_z = 15)
+# mcmc(m0)
 
 ##
 
@@ -1443,119 +1443,119 @@ end
 ##
 # Need to plot moments as functions of parameters to 
 # make sure errors cross zero
-lls = LinRange(-4.5, 1, 100)
-ls = exp.(lls)
-errs = zeros(length(ls))
-j2jcs = zeros(length(ls))
-staycs = zeros(length(ls))
-for i in 1:length(lls)
-    # errs[i] = mom_err([lls[i]], [0.1, 0.02, 1.1])[1]
+# lls = LinRange(-4.5, 1, 100)
+# ls = exp.(lls)
+# errs = zeros(length(ls))
+# j2jcs = zeros(length(ls))
+# staycs = zeros(length(ls))
+# for i in 1:length(lls)
+#     # errs[i] = mom_err([lls[i]], [0.1, 0.02, 1.1])[1]
 
-    m0 = seq_auction_firm_dyn(delta = 0.05, lambda = ls[i], 
-    chi = 0.1, xi = 1.1, n_z = 15, nI = 100, nT = 100, nJ = 100)
-    mcmc(m0)
+#     m0 = seq_auction_firm_dyn(delta = 0.05, lambda = ls[i], 
+#     chi = 0.1, xi = 1.1, n_z = 15, nI = 100, nT = 100, nJ = 100)
+#     mcmc(m0)
 
-    j2jcs[i] = j2j_mean_wage_change(m0)
-    staycs[i] = stay_mean_wage_change(m0)
-end
+#     j2jcs[i] = j2j_mean_wage_change(m0)
+#     staycs[i] = stay_mean_wage_change(m0)
+# end
 
-plt = plot(ls, j2jcs, label = "j2j changes")
-display(plt)
-plt = plot(ls, staycs, label = "stay changes")
-display(plt)
+# plt = plot(ls, j2jcs, label = "j2j changes")
+# display(plt)
+# plt = plot(ls, staycs, label = "stay changes")
+# display(plt)
 
-##
-lcs = LinRange(-4.5, 1, 20)
-cs = exp.(lcs)
-errs = zeros(length(cs))
-j2jcs = zeros(length(cs))
-staycs = zeros(length(cs))
-for i in 1:length(cs)
-    # errs[i] = mom_err([lls[i]], [0.1, 0.02, 1.1])[1]
+# ##
+# lcs = LinRange(-4.5, 1, 20)
+# cs = exp.(lcs)
+# errs = zeros(length(cs))
+# j2jcs = zeros(length(cs))
+# staycs = zeros(length(cs))
+# for i in 1:length(cs)
+#     # errs[i] = mom_err([lls[i]], [0.1, 0.02, 1.1])[1]
 
-    m0 = seq_auction_firm_dyn(delta = 0.05, lambda = 0.2, 
-    chi = cs[i], xi = 1.1, n_z = 15, nI = 1000, nT = 100, nJ = 1000)
-    mcmc(m0)
+#     m0 = seq_auction_firm_dyn(delta = 0.05, lambda = 0.2, 
+#     chi = cs[i], xi = 1.1, n_z = 15, nI = 1000, nT = 100, nJ = 1000)
+#     mcmc(m0)
 
-    j2jcs[i] = j2j_mean_wage_change(m0)
-    staycs[i] = stay_mean_wage_change(m0)
-end
+#     j2jcs[i] = j2j_mean_wage_change(m0)
+#     staycs[i] = stay_mean_wage_change(m0)
+# end
 
-plt = plot(cs, j2jcs, label = "j2j changes")
-display(plt)
-plt = plot(cs, staycs, label = "stay changes")
-display(plt)
+# plt = plot(cs, j2jcs, label = "j2j changes")
+# display(plt)
+# plt = plot(cs, staycs, label = "stay changes")
+# display(plt)
 
-##
-# Example moment to hit (not from any real data):
-# LP drift = -0.2, LP Pareto = 4.0
-# e_to_u (so delta) = 0.15
-# change in earnings rank for stayers 0.003 (try with -0.003 also)
-# change in earnings rank for switchers -0.02 (try with +0.02?)
+# ##
+# # Example moment to hit (not from any real data):
+# # LP drift = -0.2, LP Pareto = 4.0
+# # e_to_u (so delta) = 0.15
+# # change in earnings rank for stayers 0.003 (try with -0.003 also)
+# # change in earnings rank for switchers -0.02 (try with +0.02?)
 
-# mcal = calibrate_model([0.2, 4.0, 0.15, 0.003])
-# println("0.003 lambda: ", mcal.lambda)
-# mcal = calibrate_model([0.2, 4.0, 0.15, -0.003])
-# println("-0.003 lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.2, 4.0, 0.15, 0.003])
+# # println("0.003 lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.2, 4.0, 0.15, -0.003])
+# # println("-0.003 lambda: ", mcal.lambda)
 
-# mcal = calibrate_model([0.2, 4.0, 0.15, -0.02])
-# println("-0.02 lambda: ", mcal.lambda)
-# mcal = calibrate_model([0.2, 4.0, 0.15, 0.02])
-# println("0.02 lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.2, 4.0, 0.15, -0.02])
+# # println("-0.02 lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.2, 4.0, 0.15, 0.02])
+# # println("0.02 lambda: ", mcal.lambda)
 
-# Want to try some more sample calibrations
-# mcal = calibrate_model([0.1, 3.0, 0.1, -0.004])
-# println("-0.004 lambda: ", mcal.lambda)
-# mcal = calibrate_model([0.1, 10.0, 0.2, -0.02])
-# println("lambda: ", mcal.lambda)
-# mcal = calibrate_model([0.23, 3.0, 0.2, 0.06])
-# println("lambda: ", mcal.lambda)
-# mcal = calibrate_model([0.06, 9.0, 0.15, 0.08])
-# println("lambda: ", mcal.lambda)
+# # Want to try some more sample calibrations
+# # mcal = calibrate_model([0.1, 3.0, 0.1, -0.004])
+# # println("-0.004 lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.1, 10.0, 0.2, -0.02])
+# # println("lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.23, 3.0, 0.2, 0.06])
+# # println("lambda: ", mcal.lambda)
+# # mcal = calibrate_model([0.06, 9.0, 0.15, 0.08])
+# # println("lambda: ", mcal.lambda)
 
-mcal0 = calibrate_model([0.2, 3.0, 0.15, -0.02])
-# # mcallambda = calibrate_model([0.2, 3.0, 0.15, -0.02]) 
-# # mcalchi = calibrate_model([0.15, 3.0, 0.15, -0.02])
-mcal1 = calibrate_model([0.15, 3.0, 0.15, -0.01])
+# mcal0 = calibrate_model([0.2, 3.0, 0.15, -0.02])
+# # # mcallambda = calibrate_model([0.2, 3.0, 0.15, -0.02]) 
+# # # mcalchi = calibrate_model([0.15, 3.0, 0.15, -0.02])
+# mcal1 = calibrate_model([0.15, 3.0, 0.15, -0.01])
 
-mcallambda = deepcopy(mcal0)
-mcallambda.lambda = mcal1.lambda
-mcallambda.lambda_dt = 1 - exp(-mcallambda.lambda * mcallambda.dt)
-mcmc(mcallambda)
+# mcallambda = deepcopy(mcal0)
+# mcallambda.lambda = mcal1.lambda
+# mcallambda.lambda_dt = 1 - exp(-mcallambda.lambda * mcallambda.dt)
+# mcmc(mcallambda)
 
-mcalchi = deepcopy(mcal0)
-mcalchi.chi = mcal1.chi
-mcalchi.chi_dt = 1 - exp(-mcalchi.chi * mcalchi.dt)
-mcmc(mcalchi)
+# mcalchi = deepcopy(mcal0)
+# mcalchi.chi = mcal1.chi
+# mcalchi.chi_dt = 1 - exp(-mcalchi.chi * mcalchi.dt)
+# mcmc(mcalchi)
 
 
-mom0 = switch_mean_wage_change(mcal0)
-mom1 = switch_mean_wage_change(mcal1)
-momlambda = switch_mean_wage_change(mcallambda)
-momchi = switch_mean_wage_change(mcalchi)
-println("switch mean wage change")
-println("total: ", mom1 - mom0)
-println()
-println("m1-mlambda: ", mom1 - momlambda)
-println("mlambda-m0: ", momlambda - mom0)
-println()
-println("m1-mchi: ", mom1 - momchi)
-println("mchi-m0: ", momchi - mom0)
+# mom0 = switch_mean_wage_change(mcal0)
+# mom1 = switch_mean_wage_change(mcal1)
+# momlambda = switch_mean_wage_change(mcallambda)
+# momchi = switch_mean_wage_change(mcalchi)
+# println("switch mean wage change")
+# println("total: ", mom1 - mom0)
+# println()
+# println("m1-mlambda: ", mom1 - momlambda)
+# println("mlambda-m0: ", momlambda - mom0)
+# println()
+# println("m1-mchi: ", mom1 - momchi)
+# println("mchi-m0: ", momchi - mom0)
 
-println("-------------------")
+# println("-------------------")
 
-mom0 = stay_mean_wage_change(mcal0)
-mom1 = stay_mean_wage_change(mcal1)
-momlambda = stay_mean_wage_change(mcallambda)
-momchi = stay_mean_wage_change(mcalchi)
-println("stay mean wage change")
-println("total: ", mom1 - mom0)
-println()
-println("m1-mlambda: ", mom1 - momlambda)
-println("mlambda-m0: ", momlambda - mom0)
-println()
-println("m1-mchi: ", mom1 - momchi)
-println("mchi-m0: ", momchi - mom0)
+# mom0 = stay_mean_wage_change(mcal0)
+# mom1 = stay_mean_wage_change(mcal1)
+# momlambda = stay_mean_wage_change(mcallambda)
+# momchi = stay_mean_wage_change(mcalchi)
+# println("stay mean wage change")
+# println("total: ", mom1 - mom0)
+# println()
+# println("m1-mlambda: ", mom1 - momlambda)
+# println("mlambda-m0: ", momlambda - mom0)
+# println()
+# println("m1-mchi: ", mom1 - momchi)
+# println("mchi-m0: ", momchi - mom0)
 
 
 
