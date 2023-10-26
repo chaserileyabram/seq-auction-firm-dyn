@@ -1,0 +1,11 @@
+
+#################
+Epilogue Job Info:
+Job ID: 490434.acropolis
+User ID: abram
+Job Name: sf-sim-106
+Resource List: procs=2,mem=4gb,walltime=00:15:00
+Resources Used: cput=00:02:27,vmem=6187124kb,walltime=00:02:29,mem=993736kb,energy_used=0
+Exit Code: 1
+#################
+

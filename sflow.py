@@ -28,7 +28,7 @@ sf.init({ # Runner for PBS
     "executors":{
         "hpc":{
             "account": "abram",
-            "maxsize": 20,
+            "maxsize": 150,
             "modules": 'julia/1.8.3',
             "walltime": '00:15:00'
         } 
@@ -73,7 +73,7 @@ async def flow_mysim():
         # outputs = f"{temp_dir}/res_{i}.csv",
         name = f"sim-{i}").set_cpu(2).set_memory(4)
         # for i in range(5)
-        for i in [2,4,5]
+        for i in range(2, 113, 1)
     ]
 
     await sf.bag(*tasks)
