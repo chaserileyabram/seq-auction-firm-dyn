@@ -1,0 +1,19 @@
+ERROR: LoadError: Roots.ConvergenceFailed("Algorithm failed to converge")
+Stacktrace:
+ [1] find_zero(f::Function, x0::Float64, M::Order0, p′::Nothing; p::Nothing, verbose::Bool, tracks::Roots.NullTracks, kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+   @ Roots ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:229
+ [2] find_zero (repeats 2 times)
+   @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:210 [inlined]
+ [3] #find_zero#40
+   @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [4] find_zero
+   @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [5] calibrate_model(moms::Vector{Float64})
+   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1428
+ [6] (::var"#35#37")()
+   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:43
+ [7] redirect_stdio(f::var"#35#37"; stdin::Nothing, stderr::Nothing, stdout::String)
+   @ Base ./stream.jl:1411
+ [8] top-level scope
+   @ /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15
+in expression starting at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15

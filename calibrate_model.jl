@@ -3,6 +3,7 @@
 # Start log
 row = ARGS[1]
 row_str = string(row)
+println("Starting calibrations for row ", row_str)
 
 using XLSX
 include("seq_auction_firm_dyn.jl")
@@ -33,7 +34,11 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
 
     anzsic = sh["A"*row_str]
+    println("anzsic: ", anzsic)
+
     period = sh["B"*row_str]
+    println("period: ", period)
+
     e_to_u = 0.2 #sh["F"*row_str]
     switch_dwq = sh["H"*row_str]
     lp_pareto = 1.1 # -sh["M"*row_str]
@@ -41,6 +46,9 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
     # mcal = seq_auction_firm_dyn()
     mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dwq])
+
+    println()
+    println("Calibration complete")
 
     ##
     # Write parameters to spreadsheet
