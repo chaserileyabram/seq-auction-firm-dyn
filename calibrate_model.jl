@@ -34,7 +34,7 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
     anzsic = sh["A"*row_str]
     period = sh["B"*row_str]
-    e_to_u = sh["F"*row_str]
+    e_to_u = 0.2 #sh["F"*row_str]
     switch_dwq = sh["H"*row_str]
     lp_pareto = 1.1 # -sh["M"*row_str]
     lp_drift = -sh["O"*row_str]
@@ -45,7 +45,7 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
     ##
     # Write parameters to spreadsheet
 
-    "output/"*out_name*"/logs/log_"*row_str
+    # "output/"*out_name*"/logs/log_"*row_str
     XLSX.openxlsx("output/"*out_name*"/params/params_"*row_str*".xlsx", mode="w") do xfo
         sheet = xfo[1]
         XLSX.rename!(sheet, "params")

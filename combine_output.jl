@@ -26,6 +26,7 @@ cd("params")
 # Get names of successful output
 # files = sort(readdir())
 files = filter(f -> f[1:6] == "params", readdir())
+sort!(files)
 println("files: ", files)
 cd("..")
 
@@ -33,7 +34,42 @@ for i in 1:length(files)
     file = files[i]
     row = XLSX.readdata("params/"*file, "params!A2:F2")
 
-    XLSX.openxlsx("params_combined.xlsx", mode="rw") do xfo
+    XLSX.openxlsx("params/params_combined.xlsx", mode="rw") do xfo
+        sheet = xfo[1]
+        sheet["A"*string(i+1)] = row
+    end
+end
+
+
+# Initialize combined decomps sheet
+XLSX.openxlsx("decompositions_combined.xlsx", mode="w") do xfo
+    sheet = xfo[1]
+    XLSX.rename!(sheet, "params")
+    sheet["A1"] = "anzsic"
+    sheet["B1"] = "period"
+    sheet["C1"] = "stay_dw_0"
+    sheet["D1"] = "stay_dw_1"
+    sheet["E1"] = "stay_dw_lambda"
+    sheet["F1"] = "stay_dw_chi"
+    sheet["G1"] = "lambda_share"
+    sheet["H1"] = "chi_residual"
+    sheet["I1"] = "chi_share"
+    sheet["J1"] = "lambda_residual"
+end
+
+cd("decompositions")
+# Get names of successful output
+# files = sort(readdir())
+files = filter(f -> f[1:6] == "decompositions", readdir())
+sort!(files)
+println("files: ", files)
+cd("..")
+
+for i in 1:length(files)
+    file = files[i]
+    row = XLSX.readdata("decompositions/"*file, "params!A2:J2")
+
+    XLSX.openxlsx("decompositions/decompositions_combined.xlsx", mode="rw") do xfo
         sheet = xfo[1]
         sheet["A"*string(i+1)] = row
     end

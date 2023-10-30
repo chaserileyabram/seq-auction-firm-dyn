@@ -50,7 +50,7 @@ using FixedEffectModels
     # arrival rate
     chi = 0.1
     # z grid points
-    n_z = 10
+    n_z = 15
     
     # # mean productivity
     # mu_z = 10
@@ -270,7 +270,7 @@ function wage(m, beta, zi)
 end
 
 # Markov Chain Monte Carlo simulation
-function mcmc(m)
+function mcmc!(m)
     @unpack_seq_auction_firm_dyn m
 
     Random.seed!(seed)
@@ -1320,7 +1320,7 @@ function mom_err(x, moms)
     m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
     chi = chi, xi = xi, n_z = 15, dt = 1.0)
 
-    mcmc(m)
+    mcmc!(m)
 
     # compute moments
     # err = Inf* ones(2)
@@ -1425,13 +1425,14 @@ function calibrate_model(moms)
     # xi = xi, n_z = 15, dt = 1.0)
 
     # sol = find_zero(x -> mom_err(x, moms), log(0.05); xatol=1e-6)
-    lambda = exp(find_zero(x -> mom_err(x, moms), init_lambda))
+    lambda = exp(find_zero(x
+     -> mom_err(x, moms), init_lambda))
     m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
-    chi = chi, xi = xi, n_z = 15, dt = 1.0)
+    chi = chi, xi = xi)
 
     # Need to fix so can allow to adapt to chi input
 
-    mcmc(m)
+    mcmc!(m)
 
     return m
 end

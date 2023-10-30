@@ -15,6 +15,7 @@ cd(out_str)
 # Make log and parameter folders
 mkdir("logs")
 mkdir("params")
+mkdir("decompositions")
 
 # Message about batch?
 # write("run_date_time.txt", run_date_time)

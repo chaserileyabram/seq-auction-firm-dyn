@@ -71,9 +71,21 @@ async def flow_mysim():
         sf.Task(
         cmd = f"julia calibrate_model.jl {i}",
         # outputs = f"{temp_dir}/res_{i}.csv",
-        name = f"sim-{i}").set_cpu(2).set_memory(4)
+        name = f"sim-cal-{i}").set_cpu(2).set_memory(4)
         # for i in range(5)
         for i in range(2, 113, 1)
+    ]
+
+    await sf.bag(*tasks)
+
+    # Decompose each change in model
+    tasks = [
+        sf.Task(
+        cmd = f"julia decomposition.jl {i}",
+        # outputs = f"{temp_dir}/res_{i}.csv",
+        name = f"sim-decomp-{i}").set_cpu(2).set_memory(4)
+        # for i in range(5)
+        for i in range(2, 112, 2)
     ]
 
     await sf.bag(*tasks)
