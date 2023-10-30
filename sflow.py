@@ -28,9 +28,9 @@ sf.init({ # Runner for PBS
     "executors":{
         "hpc":{
             "account": "abram",
-            "maxsize": 20,
+            "maxsize": 150,
             "modules": 'julia/1.8.3',
-            "walltime": '00:15:00'
+            "walltime": '00:20:00'
         } 
     },
     'debug': True
@@ -71,10 +71,10 @@ async def flow_mysim():
         sf.Task(
         cmd = f"julia calibrate_model.jl {i}",
         # outputs = f"{temp_dir}/res_{i}.csv",
-        name = f"sim-cal-{i}").set_cpu(2).set_memory(4)
+        name = f"sim-cal-{i}").set_cpu(1).set_memory(2)
         # for i in range(5)
         # for i in range(2, 113, 1)
-        for i in range(2, 11, 1)
+        for i in range(2, 113, 1)
     ]
 
     await sf.bag(*tasks)
@@ -84,10 +84,10 @@ async def flow_mysim():
         sf.Task(
         cmd = f"julia decomposition.jl {i}",
         # outputs = f"{temp_dir}/res_{i}.csv",
-        name = f"sim-decomp-{i}").set_cpu(2).set_memory(4)
+        name = f"sim-decomp-{i}")
         # for i in range(5)
         # for i in range(2, 112, 2)
-        for i in range(2, 10, 2)
+        for i in range(2, 112, 2)
     ]
 
     await sf.bag(*tasks)

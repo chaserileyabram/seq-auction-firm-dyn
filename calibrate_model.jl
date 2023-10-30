@@ -15,7 +15,7 @@ out_name = "out_"*run_date_time
 redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
     println("Starting calibrations for row ", row_str)
-    
+
     # Go to proper directory here
 
     ##
@@ -29,10 +29,10 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
     # asdf
 
 
-    xf = XLSX.readxlsx("example_moments.xlsx")
+    # xf = XLSX.readxlsx("example_moments.xlsx")
+    xf = XLSX.readxlsx("example_moments_big.xlsx")
 
     sh = xf["anzsic_period"]
-
 
     anzsic = sh["A"*row_str]
     println("anzsic: ", anzsic)
@@ -40,16 +40,27 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
     period = sh["B"*row_str]
     println("period: ", period)
 
-    e_to_u = 0.2 #sh["F"*row_str]
-    switch_dwq = sh["H"*row_str]
-    lp_pareto = 1.1 # -sh["M"*row_str]
-    lp_drift = -sh["O"*row_str]
+    e_to_u = 0.15 #sh["C"*row_str]
+    println("e_to_u: ", e_to_u)
+
+    switch_dearn_cdf = sh["G"*row_str]
+    println("switch_dearn_cdf: ", switch_dearn_cdf)
+
+    lp_pareto = 2.1 # 1/(sh["N"*row_str]^2)
+    println("lp_pareto: ", lp_pareto)
+
+    lp_drift = -sh["Q"*row_str]
+    println("lp_drift: ", lp_drift)
 
     # mcal = seq_auction_firm_dyn()
-    mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dwq])
+    mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dearn_cdf])
 
     println()
-    println("Calibration complete")
+    println("Calibration complete: ")
+    println("lambda: ", mcal.lambda)
+    println("delta: ", mcal.delta)
+    println("chi: ", mcal.chi)
+    println("xi: ", mcal.xi)
 
     ##
     # Write parameters to spreadsheet
