@@ -3,7 +3,6 @@
 # Start log
 row = ARGS[1]
 row_str = string(row)
-println("Starting calibrations for row ", row_str)
 
 using XLSX
 include("seq_auction_firm_dyn.jl")
@@ -15,6 +14,8 @@ run_date_time = read("output/run_date_time.txt", String)
 out_name = "out_"*run_date_time
 redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
+    println("Starting calibrations for row ", row_str)
+    
     # Go to proper directory here
 
     ##

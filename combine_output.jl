@@ -11,7 +11,7 @@ cd(out_name)
 
 
 # Initialize combined output sheet
-XLSX.openxlsx("params_combined.xlsx", mode="w") do xfo
+XLSX.openxlsx("params/params_combined.xlsx", mode="w") do xfo
     sheet = xfo[1]
     XLSX.rename!(sheet, "params")
     sheet["A1"] = "anzsic"
@@ -42,7 +42,7 @@ end
 
 
 # Initialize combined decomps sheet
-XLSX.openxlsx("decompositions_combined.xlsx", mode="w") do xfo
+XLSX.openxlsx("decompositions/decompositions_combined.xlsx", mode="w") do xfo
     sheet = xfo[1]
     XLSX.rename!(sheet, "params")
     sheet["A1"] = "anzsic"
