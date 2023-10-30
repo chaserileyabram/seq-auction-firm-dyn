@@ -1425,9 +1425,13 @@ function calibrate_model(moms)
     # xi = xi, n_z = 15, dt = 1.0)
 
     # sol = find_zero(x -> mom_err(x, moms), log(0.05); xatol=1e-6)
-    lambda = exp(find_zero(x
-     -> mom_err(x, moms), init_lambda))
-    m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
+    # lambda = exp(find_zero(x
+    #  -> mom_err(x, moms), init_lambda))
+    # m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
+    # chi = chi, xi = xi)
+
+    # For quick debugging
+    m = seq_auction_firm_dyn(lambda = init_lambda, delta = delta,
     chi = chi, xi = xi)
 
     # Need to fix so can allow to adapt to chi input

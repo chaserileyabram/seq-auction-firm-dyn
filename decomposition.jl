@@ -1,7 +1,7 @@
 # Decompose average earnings changes into search frictions and LP churn effects 
 
 # Get rows of parameters
-row0 = ARGS[1]
+row0 = parse(Int, ARGS[1])
 row1 = row0 + 1
 row_str0 = string(row0)
 row_str1 = string(row1)

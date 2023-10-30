@@ -11,7 +11,7 @@ Stacktrace:
  [5] calibrate_model(moms::Vector{Float64})
    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1428
  [6] (::var"#35#37")()
-   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:43
+   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:49
  [7] redirect_stdio(f::var"#35#37"; stdin::Nothing, stderr::Nothing, stdout::String)
    @ Base ./stream.jl:1411
  [8] top-level scope

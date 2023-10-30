@@ -26,17 +26,22 @@ cd("params")
 # Get names of successful output
 # files = sort(readdir())
 files = filter(f -> f[1:6] == "params", readdir())
+filter!(f -> f != "params_combined.xlsx", files)
 sort!(files)
 println("files: ", files)
 cd("..")
 
 for i in 1:length(files)
+
     file = files[i]
+
+    ind = parse(Int, file[8:end-5])
+
     row = XLSX.readdata("params/"*file, "params!A2:F2")
 
     XLSX.openxlsx("params/params_combined.xlsx", mode="rw") do xfo
         sheet = xfo[1]
-        sheet["A"*string(i+1)] = row
+        sheet["A"*string(ind)] = row
     end
 end
 
