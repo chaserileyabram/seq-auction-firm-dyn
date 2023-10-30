@@ -65,18 +65,23 @@ end
 cd("decompositions")
 # Get names of successful output
 # files = sort(readdir())
-files = filter(f -> f[1:6] == "decompositions", readdir())
+files = filter(f -> f[1:14] == "decompositions", readdir())
+filter!(f -> f != "decompositions_combined.xlsx", files)
 sort!(files)
 println("files: ", files)
 cd("..")
 
 for i in 1:length(files)
+
     file = files[i]
-    row = XLSX.readdata("decompositions/"*file, "params!A2:J2")
+
+    ind = parse(Int, file[16:end-5])
+
+    row = XLSX.readdata("decompositions/"*file, "decomps!A2:J2")
 
     XLSX.openxlsx("decompositions/decompositions_combined.xlsx", mode="rw") do xfo
         sheet = xfo[1]
-        sheet["A"*string(i+1)] = row
+        sheet["A"*string(ind)] = row
     end
 end
 

@@ -29,33 +29,37 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str0*"_decomposition")
     xf = XLSX.readxlsx("output/"*out_name*"/params/params_"*row_str0*".xlsx")
     sh = xf["params"]
 
-    anzsic = sh["A"*row_str0]
-    period = sh["B"*row_str0]
+    anzsic = sh["A2"]
+    period = sh["B2"]
     
-    lambda0 = sh["C"*row_str0]
-    delta0 = sh["D"*row_str0]
-    chi0 = sh["E"*row_str0]
-    xi0 = sh["F"*row_str0]
+    lambda0 = sh["C2"]
+    delta0 = sh["D2"]
+    chi0 = sh["E2"]
+    xi0 = sh["F2"]
 
     xf = XLSX.readxlsx("output/"*out_name*"/params/params_"*row_str1*".xlsx")
     sh = xf["params"]
 
-    lambda1 = sh["C"*row_str1]
-    delta1 = sh["D"*row_str1]
-    chi1 = sh["E"*row_str1]
-    xi1 = sh["F"*row_str1]
+    lambda1 = sh["C2"]
+    delta1 = sh["D2"]
+    chi1 = sh["E2"]
+    xi1 = sh["F2"]
 
     m0 = seq_auction_firm_dyn(lambda = lambda0, delta = delta0, chi = chi0, xi = xi0)
     mcmc!(m0)
+    println("m0 done")
 
     mlambda = seq_auction_firm_dyn(lambda = lambda1, delta = delta0, chi = chi0, xi = xi0)
     mcmc!(mlambda)
+    println("mlambda done")
 
     mchi = seq_auction_firm_dyn(lambda = lambda0, delta = delta0, chi = chi1, xi = xi0)
     mcmc!(mchi)
+    println("mchi done")
 
     m1 = seq_auction_firm_dyn(lambda = lambda1, delta = delta0, chi = chi1, xi = xi0)
     mcmc!(m1)
+    println("m1 done")
     
     ##
     # Write decomp to spreadsheet
@@ -71,31 +75,51 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str0*"_decomposition")
 
         sheet["C1"] = "stay_dw_0"
         dw0 = stay_mean_wage_change(m0)
+        println("dw0: ", dw0)
         sheet["C2"] = dw0
 
         sheet["D1"] = "stay_dw_1"
         dw1 = stay_mean_wage_change(m1)
+        println("dw1: ", dw1)
         sheet["D2"] = dw1
+
+        println()
 
         sheet["E1"] = "stay_dw_lambda"
         dwlambda = stay_mean_wage_change(mlambda)
+        println("dwlambda: ", dwlambda)
         sheet["E2"] = dwlambda
 
         sheet["F1"] = "stay_dw_chi"
         dwchi = stay_mean_wage_change(mchi)
+        println("dwchi: ", dwchi)
         sheet["F2"] = dwchi
 
+        println()
+        println("lambda0 = ", lambda0, ", lambda1 = ", lambda1)
+
         sheet["G1"] = "lambda_share"
-        sheet["G2"] = (dwlambda - dw0)/(dw1 - dw0)
+        lambda_share = (dwlambda - dw0)/(dw1 - dw0)
+        println("lambda_share: ", lambda_share)
+        sheet["G2"] = lambda_share
 
         sheet["H1"] = "chi_residual"
-        sheet["H2"] = (dw1 - dwlambda)/(dw1 - dw0)
+        chi_residual = (dw1 - dwlambda)/(dw1 - dw0)
+        println("chi_residual: ", chi_residual)
+        sheet["H2"] = chi_residual
+
+        println()
+        println("chi0 = ", chi0, ", chi1 = ", chi1)
 
         sheet["I1"] = "chi_share"
-        sheet["I2"] = (dwchi - dw0)/(dw1 - dw0)
+        chi_share = (dwchi - dw0)/(dw1 - dw0)
+        println("chi_share: ", chi_share)
+        sheet["I2"] = chi_share
 
         sheet["J1"] = "lambda_residual"
-        sheet["J2"] = (dw1 - dwchi)/(dw1 - dw0)
+        lambda_residual = (dw1 - dwchi)/(dw1 - dw0)
+        println("lambda_residual: ", lambda_residual)
+        sheet["J2"] = lambda_residual
     end
 
 

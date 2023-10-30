@@ -715,12 +715,12 @@ function stay_mean_wage_change(m; add_to_plot=false)
 
     dws = dws[dws .!= -1e6]
 
-    if add_to_plot
-        plt = density!(dws, label = "stay wage_q change")
-    else
-        plt = density(dws, label = "stay wage_q change")
-    end
-    display(plt)
+    # if add_to_plot
+    #     plt = density!(dws, label = "stay wage_q change")
+    # else
+    #     plt = density(dws, label = "stay wage_q change")
+    # end
+    # display(plt)
 
     # return sum(dws)/stay
     return mean(dws)
@@ -1431,7 +1431,7 @@ function calibrate_model(moms)
     # chi = chi, xi = xi)
 
     # For quick debugging
-    m = seq_auction_firm_dyn(lambda = init_lambda, delta = delta,
+    m = seq_auction_firm_dyn(lambda = exp(init_lambda), delta = delta,
     chi = chi, xi = xi)
 
     # Need to fix so can allow to adapt to chi input
