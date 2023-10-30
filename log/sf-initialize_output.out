@@ -1,11 +1,11 @@
 
 #################
 Epilogue Job Info:
-Job ID: 491065.acropolis
+Job ID: 491083.acropolis
 User ID: abram
 Job Name: sf-initialize_output
 Resource List: procs=1,mem=1gb,walltime=00:15:00
-Resources Used: cput=00:00:00,vmem=0kb,walltime=00:00:01,mem=0kb,energy_used=0
+Resources Used: cput=00:00:00,vmem=0kb,walltime=00:00:00,mem=0kb,energy_used=0
 Exit Code: 0
 #################
 

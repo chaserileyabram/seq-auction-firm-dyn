@@ -1,2 +1,2 @@
-files: ["params_3.xlsx", "params_4.xlsx", "params_5.xlsx", "params_6.xlsx", "params_combined.xlsx"]
-files: String[]
+files: ["params_2.xlsx", "params_3.xlsx", "params_4.xlsx", "params_5.xlsx", "params_6.xlsx", "params_7.xlsx"]
+files: ["decompositions_2.xlsx", "decompositions_4.xlsx", "decompositions_6.xlsx"]

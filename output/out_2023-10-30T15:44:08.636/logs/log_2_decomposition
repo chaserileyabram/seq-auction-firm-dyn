@@ -1,0 +1,17 @@
+m0 done
+mlambda done
+mchi done
+m1 done
+dw0: 0.021158669831225007
+dw1: 0.018181902261260527
+
+dwlambda: 0.021158669831225007
+dwchi: 0.018181902261260527
+
+lambda0 = 0.2, lambda1 = 0.2
+lambda_share: -0.0
+chi_residual: 1.0
+
+chi0 = 0.2, chi1 = 0.12646051814124454
+chi_share: 1.0
+lambda_residual: -0.0
