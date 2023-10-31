@@ -1,11 +1,15 @@
+/var/spool/torque/mom_priv/jobs/492771.acropolis.SC: line 14: 36002 Killed                  julia calibrate_model.jl 3 &>log/capture_sf-sim-cal-3.txt
 
 #################
 Epilogue Job Info:
-Job ID: 491103.acropolis
+Job ID: 492771.acropolis
 User ID: abram
 Job Name: sf-sim-cal-3
-Resource List: procs=1,mem=2gb,walltime=00:20:00
-Resources Used: cput=00:04:04,vmem=6269772kb,walltime=00:04:09,mem=1121124kb,energy_used=0
-Exit Code: 0
+Resource List: procs=2,mem=4gb,walltime=01:00:00
+Resources Used: cput=00:02:53,vmem=6845256kb,walltime=00:02:56,mem=968520kb,energy_used=0
+Exit Code: 137
+Exit code 137 job terminated, resource limit violation
+Generally this means you need to request more RAM or CPU
+Please compare your resources used/requested
 #################
 

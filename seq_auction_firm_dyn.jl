@@ -110,7 +110,8 @@ using FixedEffectModels
     # Seed
     seed = 1234
     # workers
-    nI = 1000
+    # nI = 1000
+    nI = 10000
     # firms
     nJ = 100
     # time periods
@@ -1288,17 +1289,17 @@ end
 
 function mom_err(x, moms)
     # Flow to unemployment
-    e_to_u = moms[1]
+    # e_to_u = moms[1]
     # stayer share
     # stayer = moms[2]
 
     # u_to_e = moms[2]
 
-    switch = moms[2]
+    # switch = moms[2]
 
     # earn_p = moms[2]
 
-    xi = moms[3]
+    # xi = moms[3]
 
     # Drift
     chi = moms[1]
@@ -1318,7 +1319,7 @@ function mom_err(x, moms)
     lambda = exp(x)
     # Initialize and solve model
     m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
-    chi = chi, xi = xi, n_z = 15, dt = 1.0)
+    chi = chi, xi = xi)
 
     mcmc!(m)
 
@@ -1342,6 +1343,8 @@ function mom_err(x, moms)
     # err = stay_dwq - stay_mean_wage_change(m)
     err = switch_dwq - switch_mean_wage_change(m)
     println("lambda: ", lambda, ", err: ", err)
+    # so can see immediate update
+    flush(stdout)
     return err
 end
 
@@ -1425,8 +1428,8 @@ function calibrate_model(moms)
     # xi = xi, n_z = 15, dt = 1.0)
 
     # sol = find_zero(x -> mom_err(x, moms), log(0.05); xatol=1e-6)
-    lambda = exp(find_zero(x
-     -> mom_err(x, moms), init_lambda))
+    lambda = exp(find_zero(x -> mom_err(x, moms), init_lambda))
+
     m = seq_auction_firm_dyn(lambda = lambda, delta = delta,
     chi = chi, xi = xi)
 

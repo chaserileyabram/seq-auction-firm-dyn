@@ -48,18 +48,22 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str0*"_decomposition")
     m0 = seq_auction_firm_dyn(lambda = lambda0, delta = delta0, chi = chi0, xi = xi0)
     mcmc!(m0)
     println("m0 done")
+    flush(stdout)
 
     mlambda = seq_auction_firm_dyn(lambda = lambda1, delta = delta0, chi = chi0, xi = xi0)
     mcmc!(mlambda)
     println("mlambda done")
+    flush(stdout)
 
     mchi = seq_auction_firm_dyn(lambda = lambda0, delta = delta0, chi = chi1, xi = xi0)
     mcmc!(mchi)
     println("mchi done")
+    flush(stdout)
 
     m1 = seq_auction_firm_dyn(lambda = lambda1, delta = delta0, chi = chi1, xi = xi0)
     mcmc!(m1)
     println("m1 done")
+    flush(stdout)
     
     ##
     # Write decomp to spreadsheet

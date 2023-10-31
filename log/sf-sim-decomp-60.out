@@ -1,11 +1,11 @@
 
 #################
 Epilogue Job Info:
-Job ID: 491242.acropolis
+Job ID: 493103.acropolis
 User ID: abram
 Job Name: sf-sim-decomp-60
-Resource List: procs=1,mem=1gb,walltime=00:20:00
-Resources Used: cput=00:01:01,vmem=5926384kb,walltime=00:01:09,mem=910376kb,energy_used=0
-Exit Code: 0
+Resource List: procs=2,mem=4gb,walltime=01:00:00
+Resources Used: cput=00:00:48,vmem=5795204kb,walltime=00:00:54,mem=641892kb,energy_used=0
+Exit Code: 1
 #################
 

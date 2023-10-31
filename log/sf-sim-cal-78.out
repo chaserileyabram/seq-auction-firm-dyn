@@ -1,11 +1,11 @@
 
 #################
 Epilogue Job Info:
-Job ID: 491178.acropolis
+Job ID: 492846.acropolis
 User ID: abram
 Job Name: sf-sim-cal-78
-Resource List: procs=1,mem=2gb,walltime=00:20:00
-Resources Used: cput=00:04:27,vmem=6379536kb,walltime=00:04:38,mem=1265200kb,energy_used=0
-Exit Code: 0
+Resource List: procs=2,mem=4gb,walltime=01:00:00
+Resources Used: cput=00:01:20,vmem=7162020kb,walltime=00:01:29,mem=1586528kb,energy_used=0
+Exit Code: 1
 #################
 

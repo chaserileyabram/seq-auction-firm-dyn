@@ -30,7 +30,9 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
 
     # xf = XLSX.readxlsx("example_moments.xlsx")
-    xf = XLSX.readxlsx("example_moments_big.xlsx")
+    # xf = XLSX.readxlsx("example_moments_big.xlsx")
+    xf = XLSX.readxlsx("input/moments_oct_27_2023.xlsx")
+
 
     sh = xf["anzsic_period"]
 
@@ -51,6 +53,9 @@ redirect_stdio(stdout="output/"*out_name*"/logs/log_"*row_str) do
 
     lp_drift = -sh["Q"*row_str]
     println("lp_drift: ", lp_drift)
+
+    # So can check beginning of log while running
+    flush(stdout)
 
     # mcal = seq_auction_firm_dyn()
     mcal = calibrate_model([lp_drift, lp_pareto, e_to_u, switch_dearn_cdf])

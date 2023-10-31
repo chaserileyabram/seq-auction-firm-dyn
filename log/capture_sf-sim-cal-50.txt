@@ -1,0 +1,38 @@
+ERROR: LoadError: MethodError: no method matching *(::Missing, ::Matrix{Float64})
+Closest candidates are:
+  *(::Any, ::Any, !Matched::Any, !Matched::Any...) at operators.jl:591
+  *(!Matched::Union{Adjoint{var"#s885", <:StridedMatrix{T} where T}, Transpose{var"#s885", <:StridedMatrix{T} where T}, StridedMatrix{var"#s885"}} where var"#s885"<:Union{Float32, Float64}, ::Union{Adjoint{var"#s884", <:StridedMatrix{T} where T}, Transpose{var"#s884", <:StridedMatrix{T} where T}, StridedMatrix{var"#s884"}} where var"#s884"<:Union{Float32, Float64}) at /usr/local/julia/1.8.3/share/julia/stdlib/v1.8/LinearAlgebra/src/matmul.jl:146
+  *(!Matched::StridedMatrix{var"#s885"} where var"#s885"<:Union{ComplexF32, ComplexF64}, ::Union{Adjoint{var"#s884", <:StridedMatrix{T} where T}, Transpose{var"#s884", <:StridedMatrix{T} where T}, StridedMatrix{var"#s884"}} where var"#s884"<:Union{Float32, Float64}) at /usr/local/julia/1.8.3/share/julia/stdlib/v1.8/LinearAlgebra/src/matmul.jl:165
+  ...
+Stacktrace:
+  [1] mom_err(x::Float64, moms::Vector{Union{Missing, Float64}})
+    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1321
+  [2] #33
+    @ /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1431 [inlined]
+  [3] (::Roots.Callable_Function{Val{1}, Val{false}, var"#33#34"{Vector{Union{Missing, Float64}}}, Nothing})(x::Float64)
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/functions.jl:29
+  [4] init_state(M::Secant, F::Roots.Callable_Function{Val{1}, Val{false}, var"#33#34"{Vector{Union{Missing, Float64}}}, Nothing}, x::Float64)
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/DerivativeFree/derivative_free.jl:6
+  [5] init(𝑭𝑿::ZeroProblem{var"#33#34"{Vector{Union{Missing, Float64}}}, Float64}, M::Secant, N::AlefeldPotraShi, p′::Nothing; p::Nothing, verbose::Bool, tracks::Roots.NullTracks, kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/hybrid.jl:16
+  [6] #init#89
+    @ ~/.julia/packages/Roots/Nt9wP/src/DerivativeFree/order0.jl:37 [inlined]
+  [7] solve(𝑭𝑿::ZeroProblem{var"#33#34"{Vector{Union{Missing, Float64}}}, Float64}, M::Order0, p::Nothing; verbose::Bool, kwargs::Base.Pairs{Symbol, Roots.NullTracks, Tuple{Symbol}, NamedTuple{(:tracks,), Tuple{Roots.NullTracks}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:491
+  [8] find_zero(f::Function, x0::Float64, M::Order0, p′::Nothing; p::Nothing, verbose::Bool, tracks::Roots.NullTracks, kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:220
+  [9] find_zero (repeats 2 times)
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:210 [inlined]
+ [10] #find_zero#40
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [11] find_zero
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [12] calibrate_model(moms::Vector{Union{Missing, Float64}})
+    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1431
+ [13] (::var"#35#37")()
+    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:61
+ [14] redirect_stdio(f::var"#35#37"; stdin::Nothing, stderr::Nothing, stdout::String)
+    @ Base ./stream.jl:1411
+ [15] top-level scope
+    @ /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15
+in expression starting at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15

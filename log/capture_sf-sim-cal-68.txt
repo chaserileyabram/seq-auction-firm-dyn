@@ -1,0 +1,36 @@
+ERROR: LoadError: MethodError: no method matching iterate(::Missing)
+Closest candidates are:
+  iterate(!Matched::Union{LinRange, StepRangeLen}) at range.jl:872
+  iterate(!Matched::Union{LinRange, StepRangeLen}, !Matched::Integer) at range.jl:872
+  iterate(!Matched::T) where T<:Union{Base.KeySet{<:Any, <:Dict}, Base.ValueIterator{<:Dict}} at dict.jl:712
+  ...
+Stacktrace:
+  [1] first(itr::Missing)
+    @ Base ./abstractarray.jl:424
+  [2] (::Roots.Callable_Function{Val{1}, Val{false}, var"#33#34"{Vector{Union{Missing, Float64}}}, Nothing})(x::Float64)
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/functions.jl:29
+  [3] init_state(M::Secant, F::Roots.Callable_Function{Val{1}, Val{false}, var"#33#34"{Vector{Union{Missing, Float64}}}, Nothing}, x::Float64)
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/DerivativeFree/derivative_free.jl:6
+  [4] init(𝑭𝑿::ZeroProblem{var"#33#34"{Vector{Union{Missing, Float64}}}, Float64}, M::Secant, N::AlefeldPotraShi, p′::Nothing; p::Nothing, verbose::Bool, tracks::Roots.NullTracks, kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/hybrid.jl:16
+  [5] #init#89
+    @ ~/.julia/packages/Roots/Nt9wP/src/DerivativeFree/order0.jl:37 [inlined]
+  [6] solve(𝑭𝑿::ZeroProblem{var"#33#34"{Vector{Union{Missing, Float64}}}, Float64}, M::Order0, p::Nothing; verbose::Bool, kwargs::Base.Pairs{Symbol, Roots.NullTracks, Tuple{Symbol}, NamedTuple{(:tracks,), Tuple{Roots.NullTracks}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:491
+  [7] find_zero(f::Function, x0::Float64, M::Order0, p′::Nothing; p::Nothing, verbose::Bool, tracks::Roots.NullTracks, kwargs::Base.Pairs{Symbol, Union{}, Tuple{}, NamedTuple{(), Tuple{}}})
+    @ Roots ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:220
+  [8] find_zero (repeats 2 times)
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:210 [inlined]
+  [9] #find_zero#40
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [10] find_zero
+    @ ~/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+ [11] calibrate_model(moms::Vector{Union{Missing, Float64}})
+    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1431
+ [12] (::var"#35#37")()
+    @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:61
+ [13] redirect_stdio(f::var"#35#37"; stdin::Nothing, stderr::Nothing, stdout::String)
+    @ Base ./stream.jl:1411
+ [14] top-level scope
+    @ /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15
+in expression starting at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15

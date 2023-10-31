@@ -1,0 +1,12 @@
+=>> PBS: job killed: walltime 3622 exceeded limit 3600
+
+#################
+Epilogue Job Info:
+Job ID: 492962.acropolis
+User ID: abram
+Job Name: sf-sim-cal-194
+Resource List: procs=2,mem=4gb,walltime=01:00:00
+Resources Used: cput=01:00:20,vmem=8328340kb,walltime=01:00:22,mem=2821416kb,energy_used=0
+Exit Code: -11
+#################
+

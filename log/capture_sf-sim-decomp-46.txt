@@ -1,4 +1,4 @@
-ERROR: LoadError: AssertionError: File output/out_2023-10-30T17:00:36.646/params/params_47.xlsx not found.
+ERROR: LoadError: AssertionError: File output/out_2023-10-31T12:24:03.598/params/params_46.xlsx not found.
 Stacktrace:
  [1] check_for_xlsx_file_format(filepath::String)
    @ XLSX ~/.julia/packages/XLSX/we7i6/src/read.jl:27
@@ -9,7 +9,7 @@ Stacktrace:
  [4] readxlsx
    @ ~/.julia/packages/XLSX/we7i6/src/read.jl:43 [inlined]
  [5] (::var"#35#37")()
-   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/decomposition.jl:40
+   @ Main /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/decomposition.jl:29
  [6] redirect_stdio(f::var"#35#37"; stdin::Nothing, stderr::Nothing, stdout::String)
    @ Base ./stream.jl:1411
  [7] top-level scope

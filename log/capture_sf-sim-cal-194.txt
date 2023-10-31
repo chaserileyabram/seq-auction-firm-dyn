@@ -1,0 +1,68 @@
+
+signal (15): Terminated
+in expression starting at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:15
+sig_match_fast at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2381 [inlined]
+sig_match_fast at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2375 [inlined]
+jl_lookup_generic_ at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2464 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2543
+wage at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:260
+unknown function (ip: 0x7f0013dea821)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+mcmc! at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:347
+mom_err at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1324
+#33 at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1431 [inlined]
+Callable_Function at /home/abram/.julia/packages/Roots/Nt9wP/src/functions.jl:29
+unknown function (ip: 0x7f0013dcc396)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+update_state at /home/abram/.julia/packages/Roots/Nt9wP/src/Bracketing/alefeld_potra_shi.jl:126
+unknown function (ip: 0x7f0013dfa82f)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+#solve!#44 at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:455
+solve! at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:443
+unknown function (ip: 0x7f0013df5b48)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+#solve!#48 at /home/abram/.julia/packages/Roots/Nt9wP/src/hybrid.jl:70
+solve!##kw at /home/abram/.julia/packages/Roots/Nt9wP/src/hybrid.jl:30
+unknown function (ip: 0x7f0013df30e6)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+#solve#46 at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:492
+solve##kw at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:484
+unknown function (ip: 0x7f0013dccc26)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+#find_zero#39 at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:220
+unknown function (ip: 0x7f0013dc6d37)
+find_zero at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:210 [inlined]
+find_zero at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:210 [inlined]
+#find_zero#40 at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+find_zero at /home/abram/.julia/packages/Roots/Nt9wP/src/find_zero.jl:243 [inlined]
+calibrate_model at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/seq_auction_firm_dyn.jl:1431
+unknown function (ip: 0x7f0013dc6622)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+#35 at /mnt/ide0/home/abram/Projects/seq-auction-firm-dyn/calibrate_model.jl:61
+#redirect_stdio#683 at ./stream.jl:1411
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+redirect_stdio##kw at ./stream.jl:1374
+unknown function (ip: 0x7f0013d94741)
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547
+jl_apply at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/julia.h:1839 [inlined]
+do_call at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/interpreter.c:126
+eval_value at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/interpreter.c:215
+eval_stmt_value at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/interpreter.c:166 [inlined]
+eval_body at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/interpreter.c:612
+jl_interpret_toplevel_thunk at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/interpreter.c:750
+jl_toplevel_eval_flex at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/toplevel.c:906
+jl_toplevel_eval_flex at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/toplevel.c:850
+ijl_toplevel_eval_in at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/toplevel.c:965
+eval at ./boot.jl:368 [inlined]
+include_string at ./loading.jl:1428
+_jl_invoke at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2365 [inlined]
+ijl_apply_generic at /cache/build/default-amdci5-6/julialang/julia-release-1-dot-8/src/gf.c:2547

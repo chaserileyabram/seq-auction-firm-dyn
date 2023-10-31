@@ -1,0 +1,8 @@
+Starting calibrations for row 43
+anzsic: 1211
+period: 1
+e_to_u: 0.15
+switch_dearn_cdf: missing
+lp_pareto: 2.1
+lp_drift: 0.09294954935709637
+lambda: 0.2000012111063606, err: missing

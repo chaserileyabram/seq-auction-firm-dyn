@@ -18,7 +18,12 @@ mkdir("params")
 mkdir("decompositions")
 
 # Message about batch?
-# write("run_date_time.txt", run_date_time)
+# batch_message = "No message"
+batch_message = "Run with manufacturing industry moments from ABS. 
+These moments are a rough first pass, and should be used with caution.
+Trying with small nI and nT to check stuff works at scale with speed. Will move to properly large numbers after.
+"
+write("batch_message.txt", batch_message)
 
 # Return to root
 cd("../..")

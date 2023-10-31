@@ -1,0 +1,3 @@
+Run with manufacturing industry moments from ABS. 
+These moments are a rough first pass, and should be used with caution.
+Trying with small nI and nT to check stuff works at scale with speed. Will move to properly large numbers after.

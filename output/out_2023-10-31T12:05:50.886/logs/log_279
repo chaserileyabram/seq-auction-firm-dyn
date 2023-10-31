@@ -1,0 +1,8 @@
+Starting calibrations for row 279
+anzsic: 2519
+period: 1
+e_to_u: 0.15
+switch_dearn_cdf: missing
+lp_pareto: 2.1
+lp_drift: 0.17221344286395657
+lambda: 0.2000012111063606, err: missing

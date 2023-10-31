@@ -1,11 +1,15 @@
+/var/spool/torque/mom_priv/jobs/493093.acropolis.SC: line 14: 34260 Killed                  julia decomposition.jl 40 &>log/capture_sf-sim-decomp-40.txt
 
 #################
 Epilogue Job Info:
-Job ID: 491232.acropolis
+Job ID: 493093.acropolis
 User ID: abram
 Job Name: sf-sim-decomp-40
-Resource List: procs=1,mem=1gb,walltime=00:20:00
-Resources Used: cput=00:01:00,vmem=5999908kb,walltime=00:01:07,mem=931592kb,energy_used=0
-Exit Code: 0
+Resource List: procs=2,mem=4gb,walltime=01:00:00
+Resources Used: cput=00:01:25,vmem=7229720kb,walltime=00:01:28,mem=1655484kb,energy_used=0
+Exit Code: 137
+Exit code 137 job terminated, resource limit violation
+Generally this means you need to request more RAM or CPU
+Please compare your resources used/requested
 #################
 
