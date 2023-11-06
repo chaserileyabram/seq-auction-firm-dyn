@@ -49,7 +49,7 @@ end
 # Initialize combined decomps sheet
 XLSX.openxlsx("decompositions/decompositions_combined.xlsx", mode="w") do xfo
     sheet = xfo[1]
-    XLSX.rename!(sheet, "params")
+    XLSX.rename!(sheet, "decomps")
     sheet["A1"] = "anzsic"
     sheet["B1"] = "period"
     sheet["C1"] = "stay_dw_0"

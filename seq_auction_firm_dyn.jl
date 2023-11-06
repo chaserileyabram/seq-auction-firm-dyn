@@ -694,6 +694,7 @@ function switch_mean_wage_change(m; add_to_plot=false)
     return mean(dws)
 end
 
+
 # switch_mean_wage_change(m0)
 # switch_mean_wage_change(mlambda; add_to_plot=true)
 # switch_mean_wage_change(mchi; add_to_plot=true)
@@ -1028,36 +1029,36 @@ end
 # println("trans_wq:")
 # display(trans_wq)
 
-# ##
-# # Baseline
-# # m0 = seq_auction_firm_dyn(nJ=100, nI=100000, nT = 100,
-# # chi = 0.1, lambda = 0.5, delta = 0.02, 
-# # n_z = 11, mu_z = -0.05, sigma_z = 0.05, 
-# # b = 0.95,
-# # dt = 0.1)
-# m0 = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-# chi = 0.5, lambda = 0.2, delta = 0.05, 
-# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+##
+# Baseline
+# m0 = seq_auction_firm_dyn(nJ=100, nI=100000, nT = 100,
+# chi = 0.1, lambda = 0.5, delta = 0.02, 
+# n_z = 11, mu_z = -0.05, sigma_z = 0.05, 
 # b = 0.95,
-# dt = 1.0)
-# mcmc(m0)
+# dt = 0.1)
+m0 = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+chi = 0.5, lambda = 0.2, delta = 0.05, 
+n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+b = 0.95,
+dt = 1.0)
+mcmc(m0)
 
-# # Decrease lambda
-# mlambda = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-# chi = 0.5, lambda = 0.1, delta = 0.05, 
-# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
-# b = 0.95,
-# dt = 1.0)
-# mcmc(mlambda)
+# Decrease lambda
+mlambda = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+chi = 0.5, lambda = 0.1, delta = 0.05, 
+n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+b = 0.95,
+dt = 1.0)
+mcmc(mlambda)
 
 
-# # # Decrease chi
-# mchi = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
-# chi = 0.25, lambda = 0.2, delta = 0.05, 
-# n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
-# b = 0.95,
-# dt = 1.0)
-# mcmc(mchi)
+# # Decrease chi
+mchi = seq_auction_firm_dyn(nJ=1000, nI=10000, nT = 1000,
+chi = 0.25, lambda = 0.2, delta = 0.05, 
+n_z = 100, mu_z = -0.05, sigma_z = sqrt(0.05), 
+b = 0.95,
+dt = 1.0)
+mcmc(mchi)
 
 
 # ##
@@ -1135,20 +1136,20 @@ end
 # println(r_earn)
 # ##
 # # Mean wage change J2J
-# dw = j2j_mean_wage_change(m0)
-# println("baseline dw (J2J): ", dw)
-# dw = j2j_mean_wage_change(mlambda; add_to_plot=true)
-# println("lambda dw (J2J): ", dw)
-# dw = j2j_mean_wage_change(mchi; add_to_plot=true)
-# println("chi dw (J2J): ", dw)
-# println()
-# # stayer change
-# dw = stay_mean_wage_change(m0)
-# println("baseline dw (stayer): ", dw)
-# dw = stay_mean_wage_change(mlambda; add_to_plot=true)
-# println("lambda dw (stayer): ", dw)
-# dw = stay_mean_wage_change(mchi; add_to_plot=true)
-# println("chi dw (stayer): ", dw)
+dw = switch_mean_wage_change(m0)
+println("baseline dw (J2J): ", dw)
+dw = switch_mean_wage_change(mlambda; add_to_plot=true)
+println("lambda dw (J2J): ", dw)
+dw = switch_mean_wage_change(mchi; add_to_plot=true)
+println("chi dw (J2J): ", dw)
+println()
+# stayer change
+dw = stay_mean_wage_change(m0)
+println("baseline dw (stayer): ", dw)
+dw = stay_mean_wage_change(mlambda; add_to_plot=true)
+println("lambda dw (stayer): ", dw)
+dw = stay_mean_wage_change(mchi; add_to_plot=true)
+println("chi dw (stayer): ", dw)
 
 # ##
 # println("baseline stay share: ", stay_share(m0))

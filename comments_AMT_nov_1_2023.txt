@@ -1,0 +1,69 @@
+1 Nov 2023 Chase AMT
+Thomas: what is most similar
+Thomas: what is LP
+Arshia: you have profits, what are they?
+Thomas: what is ur def of LP under Cobb Douglas
+Marcos: earnings minus inputs?
+you should have a plot for rank rank regressions to explain the coefficient
+Elena: what does the rank-rank regression show us?
+show J2Js gone down or something
+age fixed effect
+Sean: how does earnings rank change for different periods
+need to control for demographics etc
+jose: other things going on changing LP measure over time
+you’re gonna wanna do AKM
+many concerns on LP
+what are these numbers for the US?
+marcos: how much is mechanical here
+what’s a null look like in these regressions, monte carlo with competitive labor market, what do these regressions look like?
+thomas: defn of labor market, clarity on counterfactuals
+craig: increasing frictions / decreasing frictions explain the data ? are there papers abt search frictions rising in australia? bc of tech search frictions down?
+karan: if search was random youd have the firm / worker dynamics link ?
+thomas: what is churn?
+arshia: notation integral over z’ typo slide 12
+jose: workers bear all the LP risk via chi ?
+thomas: share of surplus constant why?
+sean: other papers have decreasing returns to scale? does the boundary of the firm matter in your case?
+confusion over distribution of distributions .why not a joint distribution
+jose: can observe productivity of the firm so forward looking behavior important
+raman: workers r ex ante the same, isnt the only margin on the other side?
+jose: no monotonicity ?
+craig: why would a high z firm offer me a lower wage?
+thomas: chi down hits LP fact, what is chi, microfoundation, explanation, stuff?
+wages cond on J2Js as better motivating fact
+raman: eqm relationship between size and other endogenous vars?
+jose: having hard time going model -> facts. model about wage growth, facts about relative, distribution.
+marcos: earnings mobility up, others going up, should see scatter of lambdas and chis against each other?
+craig: decline of business dynamism: what does that mean, is that even true
+
+jose: AKM pre and post
+
+
+
+Notes to self of what to attack:
+- Check how I construct value-added and labor productivity, TFP, etc. I want to make sure that the way I am doing this is not mechanically generating results, or otherwise causing issues. Should probably try with revenues, and/or construct value-added in a different way.
+
+- Age FE check is important. Probably want wages to be residualized away from age, education, sex, and any other demographic stuff. Maybe should think about firm tenure, since there would be predictions for that in the model, and can get some tenure measures from data.
+
+- AKM: think hard about what I can and cannot learn from AKM, and whether vanilla AKM is the right regression from the standpoint of the model. Jose's suggestion to do pre- and post- AKM is interesting, but of course this completely turns off the LP dynamics at the firm level, since the firm FE is not time-varying.
+
+- Need to do the reduced-form Compustat and PSID exercise. Even if not totally fleshed out, it would help guide the discussion. Plus would help clarify exactly where the microdata does and does not help me.
+
+- If I am going to make claim that search frictions are rising and churn is falling, I should also have some evidence like J2J predictions. If I could disentangle predictions (like I can with earnings) that would be optimal.
+
+- On earnings point, since the churn decrease and frictions increase have different implications for wage changes J2J vs. stay, I should try to exploit those relationships. Have to think harder about if this can be done at micro level or need to be aggregated within industries or sectors, etc.
+
+- Should think a bit about the risk aversion point from Arshia, since the "firms as insurance" story will keep getting brought up. It may just be that I say the issue is not first-order for the question I am concerned about, but I should at least understand how it would change mechanics.
+
+- Think hard about what CRS vs. DRS does in this case. Analytically, it obviously simplifies problem greatly since reduces to a model of jobs rather than firms, but in terms of empirical predictions, CRS is just the DRS limit...
+
+- What is my explanation for the declining churn story. I am currently taking it as given, but moving forward I should probably have at least a good answer for WHY I am not digging deeper into its causes.
+
+- The wage conditional on J2J or stay is potentially good motivating fact, since it hits my story and might be surprising, if I can get the empirics clean enough.
+
+- Need to be clearer that I am explaining the earnings dynamics change USING the LP change. The null would be that these are not connected, but I am both showing the earnings fact and that it is connected to the LP fact.
+
+- Don't make scatters that will be compared with earlier scatters and be confusing!
+
+- Want to clarify exact sense in "dynamism" is declining in AU. Maybe just check some Dan Andrews stuff?
+
